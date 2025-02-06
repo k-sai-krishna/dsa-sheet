@@ -45,7 +45,7 @@ def login():
             st.session_state['username'] = username
             st.session_state['login_time'] = datetime.now().isoformat()
             save_session()
-            st.query_params.clear()
+            st.query_params ={}
         else:
             st.error("Invalid username or password")
 
@@ -71,7 +71,7 @@ else:
         for key in ['logged_in', 'username', 'login_time']:
             st.session_state.pop(key, None)
         clear_session()
-        st.query_params.clear()
+        st.query_params = {}
     # Load grouped problem data
     plan_file = 'problems.json'
     progress_file = f"progress_{username}.json"  # Save progress per user
