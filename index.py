@@ -15,8 +15,8 @@ SESSION_FILE = 'session.json'
 def save_session():
     session_data = {
         'logged_in': st.session_state.get('logged_in', False),
-        'username': st.session_state.get('username'),
-        'login_time': st.session_state.get('login_time')
+        'username': st.session_state.get('username', ''),
+        'login_time': st.session_state.get('login_time', '')
     }
     with open(SESSION_FILE, 'w') as f:
         json.dump(session_data, f)
@@ -45,7 +45,7 @@ def login():
             st.session_state['username'] = username
             st.session_state['login_time'] = datetime.now().isoformat()
             save_session()
-            st.experimental_set_query_params()
+            st.query_params.clear()
         else:
             st.error("Invalid username or password")
 
@@ -64,16 +64,17 @@ load_session()
 if not is_session_valid():
     login()
 else:
-    st.sidebar.write(f"Logged in as: {st.session_state['username']}\n\n Hello!! {st.session_state['username']}\n\n Your progress is saved in your local storage only")
+    username = st.session_state.get('username', 'default_user')  # Ensure username is initialized
+    st.sidebar.write(f"Logged in as: {username}\n\n Hello!! {username}\n\n Your progress is saved in your local storage only")
+    
     if st.sidebar.button("Logout"):
         for key in ['logged_in', 'username', 'login_time']:
             st.session_state.pop(key, None)
         clear_session()
-        st.experimental_set_query_params()
-
+        st.query_params.clear()
     # Load grouped problem data
     plan_file = 'problems.json'
-    progress_file = f"progress_{st.session_state['username']}.json"  # Save progress per user
+    progress_file = f"progress_{username}.json"  # Save progress per user
 
     def load_plan():
         with open(plan_file, 'r') as f:
