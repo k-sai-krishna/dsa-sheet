@@ -65,7 +65,7 @@ if not is_session_valid():
     login()
 else:
     username = st.session_state.get('username', 'default_user')  # Ensure username is initialized
-    st.sidebar.write(f"Logged in as: {username}\n\n Hello!! {username}\n\n Your progress is saved in your local storage only")
+    st.sidebar.write(f"Logged in as: {username}")
     
     if st.sidebar.button("Logout"):
         for key in ['logged_in', 'username', 'login_time']:
