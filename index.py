@@ -45,7 +45,7 @@ def login():
             st.session_state['username'] = username
             st.session_state['login_time'] = datetime.now().isoformat()
             save_session()
-            st.query_params ={}
+            st.query_params.clear()
         else:
             st.error("Invalid username or password")
 
